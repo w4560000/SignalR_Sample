@@ -12,6 +12,7 @@ namespace SignalR_Sample.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
+        public List<string> Message = new List<string>();
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
@@ -21,5 +22,10 @@ namespace SignalR_Sample.Pages
         {
 
         }
+
+        //public void OnPostEngGreet()
+        //{
+        //    Message = $"Hello, {Name}";
+        //}
     }
 }
