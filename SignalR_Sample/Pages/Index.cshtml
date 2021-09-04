@@ -36,7 +36,7 @@
 
         var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44378/chatHub").build();
 
-        connection.on("ReceiveMessage", function (content) {
+        connection.on("AllMessage_Recevie", function (content) {
             var li = document.createElement("li");
             li.textContent = content;
             document.getElementById("messagesList").appendChild(li);
@@ -49,7 +49,7 @@
         document.getElementById("sendButton").addEventListener("click", function (event) {
             var user = document.getElementById("userInput").value;
             var message = document.getElementById("messageInput").value;
-            connection.invoke("SendAllMessage", user, message).catch(function (err) {
+            connection.invoke("AllMessage_Send", user, message).catch(function (err) {
                 return console.error(err.toString());
             });
             event.preventDefault();

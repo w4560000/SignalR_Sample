@@ -17,7 +17,7 @@ namespace SignalR_WinForm
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new PublicChannel());
+            Application.Run(new ChatRoom());
         }
     }
 }

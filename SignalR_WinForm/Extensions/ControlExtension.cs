@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace SignalR_WinForm.Extension
+namespace SignalR_WinForm.Extensions
 {
     internal static class ControlExtension
     {
