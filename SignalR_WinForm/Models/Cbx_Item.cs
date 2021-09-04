@@ -2,11 +2,13 @@
 {
     public class Cbx_Item
     {
-        public Cbx_Item(string name, string value, int order)
+        public Cbx_Item(string name, string value, int order = -1)
         {
             this.Name = name;
             this.Value = value;
-            this.Order = order;
+
+            if (order == -1)
+                this.Order += 1;
         }
 
         public string Name { get; set; }

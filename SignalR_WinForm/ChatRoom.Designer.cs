@@ -29,100 +29,244 @@ namespace SignalR_WinForm
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
+            this.lbl_Name = new System.Windows.Forms.Label();
             this.txt_Name = new System.Windows.Forms.TextBox();
-            this.txt_ChatRoom = new System.Windows.Forms.TextBox();
-            this.txt_Msg = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.btn_Submit = new System.Windows.Forms.Button();
-            this.cbx_ChatType = new System.Windows.Forms.ComboBox();
+            this.txt_PublicChannel_ChatRoom = new System.Windows.Forms.TextBox();
+            this.txt_PublicChannel_Msg = new System.Windows.Forms.TextBox();
+            this.lbl_PublicChannel_Send = new System.Windows.Forms.Label();
+            this.btn_PublicChannel_Submit = new System.Windows.Forms.Button();
+            this.cbx_GroupChannel = new System.Windows.Forms.ComboBox();
             this.txt_AddGroup = new System.Windows.Forms.Button();
+            this.txt_GroupChannel_ChatRoom = new System.Windows.Forms.TextBox();
+            this.txt_PersonalChannel_ChatRoom = new System.Windows.Forms.TextBox();
+            this.lbl_PublickChannel_Title = new System.Windows.Forms.Label();
+            this.lbl_GroupChannel_Title = new System.Windows.Forms.Label();
+            this.btn_GroupChannel_Submit = new System.Windows.Forms.Button();
+            this.lbl_GroupChannel_Send = new System.Windows.Forms.Label();
+            this.txt_GroupChannel_Msg = new System.Windows.Forms.TextBox();
+            this.btn_PersonalChannel_Submit = new System.Windows.Forms.Button();
+            this.lbl_PersonalChannel_Send = new System.Windows.Forms.Label();
+            this.txt_PersonalChannel_Msg = new System.Windows.Forms.TextBox();
+            this.lbl_PersonalChannel_Title = new System.Windows.Forms.Label();
+            this.cbx_PersonalChannel = new System.Windows.Forms.ComboBox();
+            this.btn_Name_Submit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // label1
+            // lbl_Name
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(47, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(34, 15);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "姓名:";
+            this.lbl_Name.AutoSize = true;
+            this.lbl_Name.Location = new System.Drawing.Point(47, 25);
+            this.lbl_Name.Name = "lbl_Name";
+            this.lbl_Name.Size = new System.Drawing.Size(34, 15);
+            this.lbl_Name.TabIndex = 0;
+            this.lbl_Name.Text = "姓名:";
             // 
             // txt_Name
             // 
-            this.txt_Name.Location = new System.Drawing.Point(87, 18);
+            this.txt_Name.Location = new System.Drawing.Point(87, 22);
             this.txt_Name.Name = "txt_Name";
             this.txt_Name.Size = new System.Drawing.Size(100, 23);
             this.txt_Name.TabIndex = 1;
             // 
-            // txt_ChatRoom
+            // txt_PublicChannel_ChatRoom
             // 
-            this.txt_ChatRoom.Location = new System.Drawing.Point(47, 111);
-            this.txt_ChatRoom.Multiline = true;
-            this.txt_ChatRoom.Name = "txt_ChatRoom";
-            this.txt_ChatRoom.ReadOnly = true;
-            this.txt_ChatRoom.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txt_ChatRoom.Size = new System.Drawing.Size(443, 275);
-            this.txt_ChatRoom.TabIndex = 2;
+            this.txt_PublicChannel_ChatRoom.Location = new System.Drawing.Point(47, 111);
+            this.txt_PublicChannel_ChatRoom.Multiline = true;
+            this.txt_PublicChannel_ChatRoom.Name = "txt_PublicChannel_ChatRoom";
+            this.txt_PublicChannel_ChatRoom.ReadOnly = true;
+            this.txt_PublicChannel_ChatRoom.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txt_PublicChannel_ChatRoom.Size = new System.Drawing.Size(387, 275);
+            this.txt_PublicChannel_ChatRoom.TabIndex = 2;
             // 
-            // txt_Msg
+            // txt_PublicChannel_Msg
             // 
-            this.txt_Msg.Location = new System.Drawing.Point(87, 416);
-            this.txt_Msg.Name = "txt_Msg";
-            this.txt_Msg.Size = new System.Drawing.Size(314, 23);
-            this.txt_Msg.TabIndex = 4;
+            this.txt_PublicChannel_Msg.Location = new System.Drawing.Point(47, 446);
+            this.txt_PublicChannel_Msg.Name = "txt_PublicChannel_Msg";
+            this.txt_PublicChannel_Msg.Size = new System.Drawing.Size(271, 23);
+            this.txt_PublicChannel_Msg.TabIndex = 4;
             // 
-            // label3
+            // lbl_PublicChannel_Send
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(47, 419);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(34, 15);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "訊息:";
+            this.lbl_PublicChannel_Send.AutoSize = true;
+            this.lbl_PublicChannel_Send.Location = new System.Drawing.Point(47, 419);
+            this.lbl_PublicChannel_Send.Name = "lbl_PublicChannel_Send";
+            this.lbl_PublicChannel_Send.Size = new System.Drawing.Size(91, 15);
+            this.lbl_PublicChannel_Send.TabIndex = 5;
+            this.lbl_PublicChannel_Send.Text = "發送訊息至公頻";
             // 
-            // btn_Submit
+            // btn_PublicChannel_Submit
             // 
-            this.btn_Submit.Location = new System.Drawing.Point(426, 416);
-            this.btn_Submit.Name = "btn_Submit";
-            this.btn_Submit.Size = new System.Drawing.Size(64, 23);
-            this.btn_Submit.TabIndex = 6;
-            this.btn_Submit.Text = "送出";
-            this.btn_Submit.UseVisualStyleBackColor = true;
-            this.btn_Submit.Click += new System.EventHandler(this.btn_Submit_Click);
+            this.btn_PublicChannel_Submit.Location = new System.Drawing.Point(364, 446);
+            this.btn_PublicChannel_Submit.Name = "btn_PublicChannel_Submit";
+            this.btn_PublicChannel_Submit.Size = new System.Drawing.Size(70, 23);
+            this.btn_PublicChannel_Submit.TabIndex = 6;
+            this.btn_PublicChannel_Submit.Text = "送出";
+            this.btn_PublicChannel_Submit.UseVisualStyleBackColor = true;
+            this.btn_PublicChannel_Submit.Click += new System.EventHandler(this.btn_PublicChannelSubmit_Click);
             // 
-            // cbx_ChatType
+            // cbx_GroupChannel
             // 
-            this.cbx_ChatType.FormattingEnabled = true;
-            this.cbx_ChatType.Location = new System.Drawing.Point(47, 82);
-            this.cbx_ChatType.Name = "cbx_ChatType";
-            this.cbx_ChatType.Size = new System.Drawing.Size(121, 23);
-            this.cbx_ChatType.TabIndex = 7;
-            this.cbx_ChatType.SelectedIndexChanged += new System.EventHandler(this.cbx_ChatType_SelectedIndexChanged);
+            this.cbx_GroupChannel.FormattingEnabled = true;
+            this.cbx_GroupChannel.Location = new System.Drawing.Point(562, 82);
+            this.cbx_GroupChannel.Name = "cbx_GroupChannel";
+            this.cbx_GroupChannel.Size = new System.Drawing.Size(121, 23);
+            this.cbx_GroupChannel.TabIndex = 7;
+            this.cbx_GroupChannel.SelectedIndexChanged += new System.EventHandler(this.cbx_Group_SelectedIndexChanged);
             // 
             // txt_AddGroup
             // 
-            this.txt_AddGroup.Location = new System.Drawing.Point(403, 82);
+            this.txt_AddGroup.Location = new System.Drawing.Point(1238, 21);
             this.txt_AddGroup.Name = "txt_AddGroup";
             this.txt_AddGroup.Size = new System.Drawing.Size(87, 23);
             this.txt_AddGroup.TabIndex = 8;
-            this.txt_AddGroup.Text = "新增私人頻道";
+            this.txt_AddGroup.Text = "建立私人頻道";
             this.txt_AddGroup.UseVisualStyleBackColor = true;
             this.txt_AddGroup.Click += new System.EventHandler(this.txt_AddGroup_Click);
+            // 
+            // txt_GroupChannel_ChatRoom
+            // 
+            this.txt_GroupChannel_ChatRoom.Location = new System.Drawing.Point(518, 111);
+            this.txt_GroupChannel_ChatRoom.Multiline = true;
+            this.txt_GroupChannel_ChatRoom.Name = "txt_GroupChannel_ChatRoom";
+            this.txt_GroupChannel_ChatRoom.ReadOnly = true;
+            this.txt_GroupChannel_ChatRoom.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txt_GroupChannel_ChatRoom.Size = new System.Drawing.Size(387, 275);
+            this.txt_GroupChannel_ChatRoom.TabIndex = 9;
+            // 
+            // txt_PersonalChannel_ChatRoom
+            // 
+            this.txt_PersonalChannel_ChatRoom.Location = new System.Drawing.Point(987, 111);
+            this.txt_PersonalChannel_ChatRoom.Multiline = true;
+            this.txt_PersonalChannel_ChatRoom.Name = "txt_PersonalChannel_ChatRoom";
+            this.txt_PersonalChannel_ChatRoom.ReadOnly = true;
+            this.txt_PersonalChannel_ChatRoom.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txt_PersonalChannel_ChatRoom.Size = new System.Drawing.Size(387, 275);
+            this.txt_PersonalChannel_ChatRoom.TabIndex = 10;
+            // 
+            // lbl_PublickChannel_Title
+            // 
+            this.lbl_PublickChannel_Title.AutoSize = true;
+            this.lbl_PublickChannel_Title.Location = new System.Drawing.Point(47, 85);
+            this.lbl_PublickChannel_Title.Name = "lbl_PublickChannel_Title";
+            this.lbl_PublickChannel_Title.Size = new System.Drawing.Size(31, 15);
+            this.lbl_PublickChannel_Title.TabIndex = 11;
+            this.lbl_PublickChannel_Title.Text = "公頻";
+            // 
+            // lbl_GroupChannel_Title
+            // 
+            this.lbl_GroupChannel_Title.AutoSize = true;
+            this.lbl_GroupChannel_Title.Location = new System.Drawing.Point(519, 85);
+            this.lbl_GroupChannel_Title.Name = "lbl_GroupChannel_Title";
+            this.lbl_GroupChannel_Title.Size = new System.Drawing.Size(31, 15);
+            this.lbl_GroupChannel_Title.TabIndex = 12;
+            this.lbl_GroupChannel_Title.Text = "群組";
+            // 
+            // btn_GroupChannel_Submit
+            // 
+            this.btn_GroupChannel_Submit.Location = new System.Drawing.Point(835, 446);
+            this.btn_GroupChannel_Submit.Name = "btn_GroupChannel_Submit";
+            this.btn_GroupChannel_Submit.Size = new System.Drawing.Size(70, 23);
+            this.btn_GroupChannel_Submit.TabIndex = 15;
+            this.btn_GroupChannel_Submit.Text = "送出";
+            this.btn_GroupChannel_Submit.UseVisualStyleBackColor = true;
+            this.btn_GroupChannel_Submit.Click += new System.EventHandler(this.btn_GroupSubmit_Click);
+            // 
+            // lbl_GroupChannel_Send
+            // 
+            this.lbl_GroupChannel_Send.AutoSize = true;
+            this.lbl_GroupChannel_Send.Location = new System.Drawing.Point(518, 419);
+            this.lbl_GroupChannel_Send.Name = "lbl_GroupChannel_Send";
+            this.lbl_GroupChannel_Send.Size = new System.Drawing.Size(67, 15);
+            this.lbl_GroupChannel_Send.TabIndex = 14;
+            this.lbl_GroupChannel_Send.Text = "發送訊息至";
+            // 
+            // txt_GroupChannel_Msg
+            // 
+            this.txt_GroupChannel_Msg.Location = new System.Drawing.Point(518, 446);
+            this.txt_GroupChannel_Msg.Name = "txt_GroupChannel_Msg";
+            this.txt_GroupChannel_Msg.Size = new System.Drawing.Size(271, 23);
+            this.txt_GroupChannel_Msg.TabIndex = 13;
+            // 
+            // btn_PersonalChannel_Submit
+            // 
+            this.btn_PersonalChannel_Submit.Location = new System.Drawing.Point(1304, 446);
+            this.btn_PersonalChannel_Submit.Name = "btn_PersonalChannel_Submit";
+            this.btn_PersonalChannel_Submit.Size = new System.Drawing.Size(70, 23);
+            this.btn_PersonalChannel_Submit.TabIndex = 18;
+            this.btn_PersonalChannel_Submit.Text = "送出";
+            this.btn_PersonalChannel_Submit.UseVisualStyleBackColor = true;
+            this.btn_PersonalChannel_Submit.Click += new System.EventHandler(this.btn_PersonalChannel_Submit_Click);
+            // 
+            // lbl_PersonalChannel_Send
+            // 
+            this.lbl_PersonalChannel_Send.AutoSize = true;
+            this.lbl_PersonalChannel_Send.Location = new System.Drawing.Point(987, 419);
+            this.lbl_PersonalChannel_Send.Name = "lbl_PersonalChannel_Send";
+            this.lbl_PersonalChannel_Send.Size = new System.Drawing.Size(67, 15);
+            this.lbl_PersonalChannel_Send.TabIndex = 17;
+            this.lbl_PersonalChannel_Send.Text = "發送訊息至";
+            // 
+            // txt_PersonalChannel_Msg
+            // 
+            this.txt_PersonalChannel_Msg.Location = new System.Drawing.Point(987, 446);
+            this.txt_PersonalChannel_Msg.Name = "txt_PersonalChannel_Msg";
+            this.txt_PersonalChannel_Msg.Size = new System.Drawing.Size(271, 23);
+            this.txt_PersonalChannel_Msg.TabIndex = 16;
+            // 
+            // lbl_PersonalChannel_Title
+            // 
+            this.lbl_PersonalChannel_Title.AutoSize = true;
+            this.lbl_PersonalChannel_Title.Location = new System.Drawing.Point(988, 85);
+            this.lbl_PersonalChannel_Title.Name = "lbl_PersonalChannel_Title";
+            this.lbl_PersonalChannel_Title.Size = new System.Drawing.Size(31, 15);
+            this.lbl_PersonalChannel_Title.TabIndex = 20;
+            this.lbl_PersonalChannel_Title.Text = "私訊";
+            // 
+            // cbx_PersonalChannel
+            // 
+            this.cbx_PersonalChannel.FormattingEnabled = true;
+            this.cbx_PersonalChannel.Location = new System.Drawing.Point(1031, 82);
+            this.cbx_PersonalChannel.Name = "cbx_PersonalChannel";
+            this.cbx_PersonalChannel.Size = new System.Drawing.Size(121, 23);
+            this.cbx_PersonalChannel.TabIndex = 19;
+            this.cbx_PersonalChannel.SelectedIndexChanged += new System.EventHandler(this.cbx_PersonalChannel_SelectedIndexChanged);
+            // 
+            // btn_Name_Submit
+            // 
+            this.btn_Name_Submit.Location = new System.Drawing.Point(231, 22);
+            this.btn_Name_Submit.Name = "btn_Name_Submit";
+            this.btn_Name_Submit.Size = new System.Drawing.Size(75, 23);
+            this.btn_Name_Submit.TabIndex = 21;
+            this.btn_Name_Submit.Text = "確認";
+            this.btn_Name_Submit.UseVisualStyleBackColor = true;
+            this.btn_Name_Submit.Click += new System.EventHandler(this.btn_Name_Submit_Click);
             // 
             // ChatRoom
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(611, 482);
+            this.ClientSize = new System.Drawing.Size(1396, 502);
+            this.Controls.Add(this.btn_Name_Submit);
+            this.Controls.Add(this.lbl_PersonalChannel_Title);
+            this.Controls.Add(this.cbx_PersonalChannel);
+            this.Controls.Add(this.btn_PersonalChannel_Submit);
+            this.Controls.Add(this.lbl_PersonalChannel_Send);
+            this.Controls.Add(this.txt_PersonalChannel_Msg);
+            this.Controls.Add(this.btn_GroupChannel_Submit);
+            this.Controls.Add(this.lbl_GroupChannel_Send);
+            this.Controls.Add(this.txt_GroupChannel_Msg);
+            this.Controls.Add(this.lbl_GroupChannel_Title);
+            this.Controls.Add(this.lbl_PublickChannel_Title);
+            this.Controls.Add(this.txt_PersonalChannel_ChatRoom);
+            this.Controls.Add(this.txt_GroupChannel_ChatRoom);
             this.Controls.Add(this.txt_AddGroup);
-            this.Controls.Add(this.cbx_ChatType);
-            this.Controls.Add(this.btn_Submit);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.txt_Msg);
-            this.Controls.Add(this.txt_ChatRoom);
+            this.Controls.Add(this.cbx_GroupChannel);
+            this.Controls.Add(this.btn_PublicChannel_Submit);
+            this.Controls.Add(this.lbl_PublicChannel_Send);
+            this.Controls.Add(this.txt_PublicChannel_Msg);
+            this.Controls.Add(this.txt_PublicChannel_ChatRoom);
             this.Controls.Add(this.txt_Name);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lbl_Name);
             this.Name = "ChatRoom";
             this.Text = "ChatRoom";
             this.ResumeLayout(false);
@@ -132,14 +276,27 @@ namespace SignalR_WinForm
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbl_Name;
         private System.Windows.Forms.TextBox txt_Name;
-        private System.Windows.Forms.TextBox txt_ChatRoom;
-        private System.Windows.Forms.TextBox txt_Msg;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button btn_Submit;
-        private System.Windows.Forms.ComboBox cbx_ChatType;
+        private System.Windows.Forms.TextBox txt_PublicChannel_ChatRoom;
+        private System.Windows.Forms.TextBox txt_PublicChannel_Msg;
+        private System.Windows.Forms.Label lbl_PublicChannel_Send;
+        private System.Windows.Forms.Button btn_PublicChannel_Submit;
+        private System.Windows.Forms.ComboBox cbx_GroupChannel;
         private System.Windows.Forms.Button txt_AddGroup;
+        private System.Windows.Forms.TextBox txt_GroupChannel_ChatRoom;
+        private System.Windows.Forms.TextBox txt_PersonalChannel_ChatRoom;
+        private System.Windows.Forms.Label lbl_PublickChannel_Title;
+        private System.Windows.Forms.Label lbl_GroupChannel_Title;
+        private System.Windows.Forms.Button btn_GroupChannel_Submit;
+        private System.Windows.Forms.Label lbl_GroupChannel_Send;
+        private System.Windows.Forms.TextBox txt_GroupChannel_Msg;
+        private System.Windows.Forms.Button btn_PersonalChannel_Submit;
+        private System.Windows.Forms.Label lbl_PersonalChannel_Send;
+        private System.Windows.Forms.TextBox txt_PersonalChannel_Msg;
+        private System.Windows.Forms.Label lbl_PersonalChannel_Title;
+        private System.Windows.Forms.ComboBox cbx_PersonalChannel;
+        private System.Windows.Forms.Button btn_Name_Submit;
     }
 }
 
