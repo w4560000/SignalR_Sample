@@ -12,7 +12,7 @@ namespace Common.Utilities
 {
     public static class Logger
     {
-        private static string LogPath => Path.Combine(Path.GetTempPath(), "Remotely_Logs.log");
+        private static string LogPath => Path.Combine(Path.GetTempPath(), "SignalR_Sample.log");
         private static SemaphoreSlim WriteLock { get; } = new(1, 1);
 
         public static void Debug(string message, [CallerMemberName] string callerName = "")
