@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using Common.Utilities;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using SignalR_WinForm.Extensions;
 using SignalR_WinForm.Models;
@@ -12,32 +13,27 @@ namespace SignalR_WinForm
     public partial class ChatRoom : Form
     {
         private readonly string _signalrUrl = @"https://localhost:44378/chatHub";
+        private readonly string _CloudSignalRUrl = "https://bx-signalr-server.azurewebsites.net/chatHub";
         private HubConnection _hubConnection;
 
         private List<Cbx_Item> cbx_GroupChannel_Items = new List<Cbx_Item>();
         private List<Cbx_Item> cbx_PersonalChannel_Items = new List<Cbx_Item>();
 
-
         public ChatRoom()
         {
             InitializeComponent();
 
-            Connect();
-
-            cbx_GroupChannel.DataSource = cbx_GroupChannel_Items;
-            cbx_GroupChannel.DisplayMember = "Name";
-            cbx_GroupChannel.ValueMember = "Value";
+            Logger.Debug("test");
         }
 
         private async void Connect()
         {
             this._hubConnection = new HubConnectionBuilder()
-                    .WithUrl(_signalrUrl)
+                    .WithUrl(_signalrUrl + $"?userName={txt_Name.Text}")
                     .AddMessagePackProtocol()
                     .Build();
 
             this._hubConnection.ServerTimeout = TimeSpan.FromMinutes(10);
-            await _hubConnection.StartAsync();
 
             // Register PublicChannel Msg
             this._hubConnection.On("AllMessage_Recevie",
@@ -59,9 +55,21 @@ namespace SignalR_WinForm
 
                               this.cbx_GroupChannel_Items = this.cbx_GroupChannel_Items.OrderBy(o => o.Order).ToList();
 
-                              cbx_GroupChannel.DataSource = cbx_GroupChannel_Items;
                               cbx_GroupChannel.DisplayMember = "Name";
                               cbx_GroupChannel.ValueMember = "Value";
+                              cbx_GroupChannel.DataSource = cbx_GroupChannel_Items;
+                          });
+                  });
+
+            // Register Group User Info
+            this._hubConnection.On("GetGroupUser_Recevie",
+                  (List<string> userInfo) =>
+                  {
+                      this.cbx_GroupChannel_User
+                          .InvokeIfNecessary(() =>
+                          {
+                              this.cbx_GroupChannel_User.Items.Clear();
+                              userInfo.ForEach(x => this.cbx_GroupChannel_User.Items.Add(x));
                           });
                   });
 
@@ -88,17 +96,17 @@ namespace SignalR_WinForm
             this._hubConnection.On("GetAllUser_Recevie",
                   (List<string> userList) =>
                   {
-                      this.cbx_GroupChannel
+                      Logger.Debug($"Name:{txt_Name.Text}. 取得UserList={userList.Aggregate((total, current) => total + ", " + current)}");
+                      this.cbx_PersonalChannel
                           .InvokeIfNecessary(() =>
                           {
-                              this.cbx_PersonalChannel_Items = userList.Select(x =>
-                                new Cbx_Item(x, x)).ToList();
+                              //// 加入私訊名單時, 排除自己
+                              this.cbx_PersonalChannel_Items = userList.Where(w => !w.Contains(txt_Name.Text))
+                                                                       .Select(x => new Cbx_Item(x, x)).ToList();
 
-                              this.cbx_PersonalChannel_Items = this.cbx_PersonalChannel_Items.OrderBy(o => o.Order).ToList();
-
-                              cbx_PersonalChannel.DataSource = cbx_PersonalChannel_Items;
                               cbx_PersonalChannel.DisplayMember = "Name";
                               cbx_PersonalChannel.ValueMember = "Value";
+                              cbx_PersonalChannel.DataSource = this.cbx_PersonalChannel_Items;
                           });
                   });
 
@@ -114,8 +122,8 @@ namespace SignalR_WinForm
                           });
                   });
 
+            await _hubConnection.StartAsync();
             await this._hubConnection.InvokeAsync("GetAllGroup_Send");
-            await this._hubConnection.InvokeAsync("GetAllUser_Send");
         }
 
         /// <summary>
@@ -123,14 +131,13 @@ namespace SignalR_WinForm
         /// </summary>
         private async void btn_Name_Submit_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(this.txt_Name.Text))
-            {
-                MessageBox.Show("請輸入姓名", "你他媽是誰");
+            if (!CheckName())
                 return;
-            }
 
             this.txt_Name.Enabled = false;
             this.btn_Name_Submit.Visible = false;
+
+            Connect();
 
             // 姓名輸入完，若存在現有群組 則自動加入
             if (this.cbx_GroupChannel != null &&
@@ -151,7 +158,13 @@ namespace SignalR_WinForm
         /// </summary>
         private async void btn_PublicChannelSubmit_Click(object sender, EventArgs e)
         {
+            if (!CheckName())
+                return;
+
             await this._hubConnection.InvokeAsync("AllMessage_Send", this.txt_Name.Text, this.txt_PublicChannel_Msg.Text);
+
+            // 訊息發送完 清空輸入框
+            this.txt_PublicChannel_Msg.InvokeIfNecessary(() => this.txt_PublicChannel_Msg.Text = string.Empty);
         }
 
         /// <summary>
@@ -160,16 +173,18 @@ namespace SignalR_WinForm
         private async void cbx_Group_SelectedIndexChanged(object sender, EventArgs e)
         {
             // 切換頻道 清空聊天室
-            this.txt_PublicChannel_ChatRoom.InvokeIfNecessary(() => this.txt_GroupChannel_ChatRoom.Text = string.Empty);
+            this.txt_GroupChannel_ChatRoom.InvokeIfNecessary(() => this.txt_GroupChannel_ChatRoom.Text = string.Empty);
 
             lbl_GroupChannel_Send.InvokeIfNecessary(() =>
                 this.lbl_GroupChannel_Send.Text = $"發送訊息至{cbx_GroupChannel_Items.FirstOrDefault(w => w.Value == this.cbx_GroupChannel.SelectedValue.ToString()).Name}");
 
-            if (!string.IsNullOrEmpty(txt_Name.Text))
-                await this._hubConnection.InvokeAsync("JoinGroup_Send",
-                    this._hubConnection.ConnectionId,
-                    this.cbx_GroupChannel.SelectedValue,
-                    txt_Name.Text);
+            // 切換群組, 自動加入群組
+            await this._hubConnection.InvokeAsync("JoinGroup_Send",
+                this._hubConnection.ConnectionId,
+                this.cbx_GroupChannel.SelectedValue,
+                txt_Name.Text);
+
+            await this._hubConnection.InvokeAsync("GetGroupUser_Send", this.cbx_GroupChannel.SelectedValue);
         }
 
         #endregion PublicChannel
@@ -181,6 +196,9 @@ namespace SignalR_WinForm
         /// </summary>
         private async void txt_AddGroup_Click(object sender, EventArgs e)
         {
+            if (!CheckName())
+                return;
+
             int groupOrder = this.cbx_GroupChannel_Items.Where(w => w.Value.Contains("PersonalChannel"))
                                                         .OrderByDescending(o => o.Order)
                                                         .FirstOrDefault()?.Order ?? 0;
@@ -193,14 +211,18 @@ namespace SignalR_WinForm
         /// <summary>
         /// 發送訊息至群組
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private async void btn_GroupSubmit_Click(object sender, EventArgs e)
         {
+            if (!CheckName())
+                return;
+
             await this._hubConnection.InvokeAsync("GroupMessage_Send",
                 cbx_GroupChannel.SelectedValue,
                 this.txt_Name.Text,
                 this.txt_GroupChannel_Msg.Text);
+
+            // 訊息發送完 清空輸入框
+            this.txt_GroupChannel_Msg.InvokeIfNecessary(() => this.txt_GroupChannel_Msg.Text = string.Empty);
         }
 
         #endregion GroupChannel
@@ -210,19 +232,41 @@ namespace SignalR_WinForm
         /// </summary>
         private void cbx_PersonalChannel_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // 切換頻道 清空聊天室
+            this.txt_PersonalChannel_ChatRoom.InvokeIfNecessary(() => this.txt_PersonalChannel_ChatRoom.Text = string.Empty);
+
+            Logger.Debug(this.cbx_PersonalChannel.SelectedValue.ToString());
+
+            lbl_PersonalChannel_Send.InvokeIfNecessary(() =>
+                this.lbl_PersonalChannel_Send.Text = $"發送訊息至{cbx_PersonalChannel_Items.FirstOrDefault(w => w.Value == this.cbx_PersonalChannel.SelectedValue.ToString()).Name}");
         }
 
         /// <summary>
-        /// 發送訊息至群組
+        /// 發送私訊
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private async void btn_PersonalChannel_Submit_Click(object sender, EventArgs e)
         {
+            if (!CheckName())
+                return;
+
             await this._hubConnection.InvokeAsync("UserMessage_Send",
                 cbx_PersonalChannel.SelectedValue,
                 this.txt_Name.Text,
                 this.txt_PersonalChannel_Msg.Text);
+
+            // 訊息發送完 清空輸入框
+            this.txt_PersonalChannel_Msg.InvokeIfNecessary(() => this.txt_PersonalChannel_Msg.Text = string.Empty);
+        }
+
+        private bool CheckName()
+        {
+            if (string.IsNullOrEmpty(this.txt_Name.Text))
+            {
+                MessageBox.Show("請輸入姓名", "你他媽是誰");
+                return false;
+            }
+
+            return true;
         }
     }
 }

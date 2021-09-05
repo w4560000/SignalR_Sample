@@ -50,6 +50,8 @@ namespace SignalR_WinForm
             this.lbl_PersonalChannel_Title = new System.Windows.Forms.Label();
             this.cbx_PersonalChannel = new System.Windows.Forms.ComboBox();
             this.btn_Name_Submit = new System.Windows.Forms.Button();
+            this.lbl_GroupChannel_User = new System.Windows.Forms.Label();
+            this.cbx_GroupChannel_User = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // lbl_Name
@@ -241,11 +243,30 @@ namespace SignalR_WinForm
             this.btn_Name_Submit.UseVisualStyleBackColor = true;
             this.btn_Name_Submit.Click += new System.EventHandler(this.btn_Name_Submit_Click);
             // 
+            // lbl_GroupChannel_User
+            // 
+            this.lbl_GroupChannel_User.AutoSize = true;
+            this.lbl_GroupChannel_User.Location = new System.Drawing.Point(723, 85);
+            this.lbl_GroupChannel_User.Name = "lbl_GroupChannel_User";
+            this.lbl_GroupChannel_User.Size = new System.Drawing.Size(55, 15);
+            this.lbl_GroupChannel_User.TabIndex = 22;
+            this.lbl_GroupChannel_User.Text = "群組成員";
+            // 
+            // cbx_GroupChannel_User
+            // 
+            this.cbx_GroupChannel_User.FormattingEnabled = true;
+            this.cbx_GroupChannel_User.Location = new System.Drawing.Point(784, 82);
+            this.cbx_GroupChannel_User.Name = "cbx_GroupChannel_User";
+            this.cbx_GroupChannel_User.Size = new System.Drawing.Size(121, 23);
+            this.cbx_GroupChannel_User.TabIndex = 23;
+            // 
             // ChatRoom
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1396, 502);
+            this.Controls.Add(this.cbx_GroupChannel_User);
+            this.Controls.Add(this.lbl_GroupChannel_User);
             this.Controls.Add(this.btn_Name_Submit);
             this.Controls.Add(this.lbl_PersonalChannel_Title);
             this.Controls.Add(this.cbx_PersonalChannel);
@@ -297,6 +318,8 @@ namespace SignalR_WinForm
         private System.Windows.Forms.Label lbl_PersonalChannel_Title;
         private System.Windows.Forms.ComboBox cbx_PersonalChannel;
         private System.Windows.Forms.Button btn_Name_Submit;
+        private System.Windows.Forms.Label lbl_GroupChannel_User;
+        private System.Windows.Forms.ComboBox cbx_GroupChannel_User;
     }
 }
 

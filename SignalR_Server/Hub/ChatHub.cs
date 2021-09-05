@@ -20,6 +20,12 @@ namespace SignalR_Server
         /// </summary>
         private static ConcurrentDictionary<string, string> _groupNameMapping = new ConcurrentDictionary<string, string>();
 
+        /// <summary>
+        /// 使用者資訊
+        /// { "ConnectionID", "UserName" }
+        /// </summary>
+        private static ConcurrentDictionary<string, string> _UserInfo = new ConcurrentDictionary<string, string>();
+
         #region PublicChannel
 
         /// <summary>
@@ -40,6 +46,50 @@ namespace SignalR_Server
         #endregion PublicChannel
 
         #region GroupChannel
+
+        public override async Task OnConnectedAsync()
+        {
+            var userName = Context.GetHttpContext().Request.Query["userName"];
+
+            _UserInfo.AddOrUpdate(Context.ConnectionId, userName, (key, value) => userName);
+
+            await GetAllUser_Send();
+            await base.OnConnectedAsync();
+        }
+
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            var connectionId = Context.ConnectionId;
+            var userName = Context.GetHttpContext().Request.Query["userName"];
+
+            _UserInfo.Remove(Context.ConnectionId, out _);
+
+
+
+            // 清除 群組內的使用者連線
+            List<string> groupList = _groupInfo.Where(w => w.Value.Any(w1 => w1.Item2 == Context.ConnectionId))
+                                               .Select(s => s.Key).ToList();
+
+            groupList.ForEach(async x => await Groups.RemoveFromGroupAsync(connectionId, x));
+
+            // 清除 群組資料
+            foreach (var group in _groupInfo)
+            {
+                group.Value.Remove(group.Value.SingleOrDefault(w => w.Item2 == connectionId));
+            }
+
+
+            if (_groupInfo.Any(w => w.Value.Count == 0))
+            {
+                foreach (var group in _groupInfo.Where(w => w.Value.Count == 0).ToList())
+                {
+                    _groupInfo.Remove(group.Key, out _);
+                    _groupNameMapping.Remove(group.Key, out _);
+                }
+            }
+
+            await base.OnDisconnectedAsync(exception);
+        }
 
         /// <summary>
         /// 取得所有群組資訊
@@ -82,12 +132,6 @@ namespace SignalR_Server
             if (string.IsNullOrEmpty(groupId) || string.IsNullOrEmpty(userName))
                 return;
 
-            if (_groupInfo.Any(w => w.Value.Any(a => a.Item1 == userName)))
-            {
-                await Clients.All.SendAsync("JoinGroup_Error", $"{userName} 已存在, 請更換名稱");
-                return;
-            }
-
             await Groups.AddToGroupAsync(connectionId, groupId);
 
             // 加入群組資訊
@@ -96,11 +140,12 @@ namespace SignalR_Server
                 (di) => new List<(string, string)>(),
                 (di, value) =>
                 {
+                    if (value.Any(a => a.Item1 == userName))
+                        value.Remove(value.Where(w => w.Item1 == userName).FirstOrDefault());
+
                     value.Add((userName, Context.ConnectionId));
                     return value;
                 });
-
-            await GetAllUser_Send();
         }
 
         /// <summary>
@@ -121,6 +166,21 @@ namespace SignalR_Server
             await Clients.Group(groupId).SendAsync($"GroupMessage_Recevie", content);
         }
 
+        /// <summary>
+        /// 取得群組內 所有使用者
+        /// </summary>
+        /// <param name="groupID">群組Id</param>
+        public async Task GetGroupUser_Send(string groupId)
+        {
+            if (string.IsNullOrEmpty(groupId))
+                return;
+
+            if (_groupInfo.TryGetValue(groupId, out List<(string, string)> userList))
+            {
+                await Clients.Group(groupId).SendAsync($"GetGroupUser_Recevie", userList.Select(s => s.Item1).ToList());
+            }
+        }
+
         #endregion GroupChannel
 
         /// <summary>
@@ -128,10 +188,10 @@ namespace SignalR_Server
         /// </summary>
         public async Task GetAllUser_Send()
         {
-            if (!_groupInfo.Any())
+            if (!_UserInfo.Any())
                 return;
 
-            List<string> userName = _groupInfo.SelectMany(key => key.Value, (key, value) => value.Item1).ToList();
+            List<string> userName = _UserInfo.Select(s => s.Value).ToList();
 
             await Clients.All.SendAsync($"GetAllUser_Recevie", userName);
         }
@@ -144,11 +204,16 @@ namespace SignalR_Server
             if (string.IsNullOrEmpty(userName))
                 return;
 
-            var connectionIdList = _groupInfo.FirstOrDefault(x => x.Value.Any(y => y.Item1 == userNameReceive)).Value.Select(s => s.Item2).ToList();
+            var connectionIdReceivList = _UserInfo.Where(x => x.Value == userNameReceive || x.Value == userName)
+                                               .Select(s => s.Key)
+                                               .ToList();
+
+            if (!connectionIdReceivList.Any())
+                return;
 
             var content = $"{userName} ({DateTime.Now.ToShortTimeString()})：{message}";
 
-            await Clients.Clients(connectionIdList).SendAsync("UserMessage_Recevie", content);
+            await Clients.Clients(connectionIdReceivList).SendAsync("UserMessage_Recevie", content);
         }
     }
 }

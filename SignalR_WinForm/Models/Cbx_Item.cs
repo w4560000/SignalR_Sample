@@ -5,10 +5,9 @@
         public Cbx_Item(string name, string value, int order = -1)
         {
             this.Name = name;
-            this.Value = value;
+            this.Value = value; 
 
-            if (order == -1)
-                this.Order += 1;
+            this.Order = order == -1 ? this.Order + 1 : order;
         }
 
         public string Name { get; set; }
